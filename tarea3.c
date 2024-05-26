@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "tdas/list.h"
 #include "tdas/heap.h"
 #include "tdas/extra.h"
@@ -12,6 +13,23 @@ typedef struct {
     int y;    // Posición y del espacio vacío
     List* actions; //Secuencia de movimientos para llegar al estado
 } State;
+
+bool esEstadoFinal(State* estado) {
+    int objetivo[3][3] = {
+        {0, 1, 2},
+        {3, 4, 5},
+        {6, 7, 8}
+    };
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (estado->square[i][j] != objetivo[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 int distancia_L1(State* state) {
     int ev=0;
@@ -41,6 +59,48 @@ void imprimirEstado(const State *estado) {
     }
 }
 
+State* transicion(State* actual, int accion) {
+    State* nuevo_estado = (State*) malloc(sizeof(State));
+    memcpy(nuevo_estado->square, actual->square, 3 * 3 * sizeof(int));
+    nuevo_estado->x = actual->x;
+    nuevo_estado->y = actual->y;
+    nuevo_estado->actions = list_copy(actual->actions);
+
+    int x = actual->x;
+    int y = actual->y;
+    int nuevo_x = x, nuevo_y = y;
+
+    switch (accion) {
+        case 1: // Mover arriba
+            nuevo_x = x - 1;
+            break;
+        case 2: // Mover abajo
+            nuevo_x = x + 1;
+            break;
+        case 3: // Mover izquierda
+            nuevo_y = y - 1;
+            break;
+        case 4: // Mover derecha
+            nuevo_y = y + 1;
+            break;
+        default:
+            return NULL;
+    }
+
+    if (nuevo_x >= 0 && nuevo_x < 3 && nuevo_y >= 0 && nuevo_y < 3) {
+        nuevo_estado->square[x][y] = nuevo_estado->square[nuevo_x][nuevo_y];
+        nuevo_estado->square[nuevo_x][nuevo_y] = 0;
+        nuevo_estado->x = nuevo_x;
+        nuevo_estado->y = nuevo_y;
+        int* accion_ptr = malloc(sizeof(int)); // Asignar memoria para la acción
+        *accion_ptr = accion; // Almacenar la acción en la memoria asignada
+        list_append(nuevo_estado->actions, accion_ptr); // Pasar el puntero a list_append
+        return nuevo_estado;
+    }
+
+    free(nuevo_estado);
+    return NULL;
+}
 
 int main() {
     // Estado inicial del puzzle
@@ -59,41 +119,21 @@ int main() {
 
     printf("Distancia L1:%d\n", distancia_L1(&estado_inicial));
 
-    //Ejemplo de heap (cola con prioridad)
-    printf("\n***** EJEMPLO USO DE HEAP ******\nCreamos un Heap e insertamos 3 elementos con distinta prioridad\n");
-    Heap* heap = heap_create();
-    char* data = strdup("Cinco");
-    printf("Insertamos el elemento %s con prioridad -5\n", data);
-    heap_push(heap, data, -5 /*prioridad*/);
-    data = strdup("Seis");
-    printf("Insertamos el elemento %s con prioridad -6\n", data);
-    heap_push(heap, data, -6 /*prioridad*/);
-    data = strdup("Siete");
-    printf("Insertamos el elemento %s con prioridad -7\n", data);
-    heap_push(heap, data, -7 /*prioridad*/);
-
-    printf("\nLos elementos salen del Heap ordenados de mayor a menor prioridad\n");
-    while (heap_top(heap) != NULL){
-        printf("Top: %s\n", (char*) heap_top(heap));      
-        heap_pop(heap);
-    }
-    printf("No hay más elementos en el Heap\n");
-
-    int opcion;
+    char opcion;
     do {
         printf("\n***** EJEMPLO MENU ******\n");
         puts("========================================");
         puts("     Escoge método de búsqueda");
         puts("========================================");
-        
+
         puts("1) Búsqueda en Profundidad");
         puts("2) Buscar en Anchura");
         puts("3) Buscar Mejor Primero");
         puts("4) Salir");
-    
+
         printf("Ingrese su opción: ");
         scanf(" %c", &opcion);
-    
+
         switch (opcion) {
         case '1':
           //dfs(estado_inicial);

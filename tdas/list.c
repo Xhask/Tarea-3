@@ -200,3 +200,27 @@ void list_clean(List *L) {
   L->current = NULL;
   L->size = 0;
 }
+
+List* list_copy(const List* original) {
+    List* copy = list_create();
+    Node* current = original->head;
+    while (current != NULL) {
+        list_append(copy, current->data);
+        current = current->next;
+    }
+    return copy;
+}
+
+void list_append(List* list, void* data) {
+  Node* new_node = (Node*) malloc(sizeof(Node));
+  new_node->data = data;
+  new_node->next = NULL;
+
+  if (list->tail) {
+      list->tail->next = new_node;
+  } else {
+      list->head = new_node;
+  }
+  list->tail = new_node;
+  list->size++;
+}

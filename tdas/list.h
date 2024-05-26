@@ -38,6 +38,10 @@ void list_clean(List *L);
 void list_sortedInsert(List *L, void *data,
                        int (*lower_than)(void *data1, void *data2));
 
+List* list_copy(const List* original);
+
+void list_append(List* list, void* data);
+
 int list_size(List* L);
 
 #endif
