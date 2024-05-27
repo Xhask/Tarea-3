@@ -44,4 +44,6 @@ void list_append(List* list, void* data);
 
 int list_size(List* L);
 
+void* list_get(List* list, int index);
+
 #endif

@@ -224,3 +224,15 @@ void list_append(List* list, void* data) {
   list->tail = new_node;
   list->size++;
 }
+
+void* list_get(List* list, int index) {
+    if (index < 0 || index >= list->size) {
+        return NULL;
+    }
+    Node* current = list->head;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    return current->data;
+}
+

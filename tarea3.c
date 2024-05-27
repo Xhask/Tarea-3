@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "tdas/list.h"
-#include "tdas/heap.h"
 #include "tdas/extra.h"
+#include "tdas/stack.h"
+#include "tdas/queue.h"
 #include <string.h>
 
 // Definición de la estructura para el estado del puzzle
@@ -102,6 +103,84 @@ State* transicion(State* actual, int accion) {
     return NULL;
 }
 
+void dfs(State* inicial) {
+    Stack* pila = stack_create(NULL);
+
+    stack_push(pila, inicial);
+
+    int iteraciones = 0;
+
+    while (!stack_is_empty(pila)) {
+        State* actual = (State*)stack_pop(pila);
+        iteraciones++;
+
+        if (esEstadoFinal(actual)) {
+            printf("Solución encontrada en %d iteraciones.\n", iteraciones);
+
+            List* acciones = actual->actions;
+            for (int i = 0; i < list_size(acciones); i++) {
+                int* accion = (int*)list_get(acciones, i);
+                imprimirEstado(transicion(inicial, *accion));
+            }
+
+            stack_clean(pila);
+            return;
+        }
+
+        for (int accion = 1; accion <= 4; accion++) {
+            State* nuevo_estado = transicion(actual, accion);
+            if (nuevo_estado != NULL) {
+                stack_push(pila, nuevo_estado);
+            }
+        }
+
+        free(actual);
+    }
+
+    printf("No se encontró una solución.\n");
+
+    stack_clean(pila);
+}
+
+void bfs(State* inicial) {
+    Queue* cola = queue_create(NULL);
+    queue_insert(cola, inicial);
+
+    int iteraciones = 0;
+
+    while (!queue_is_empty(cola)) {
+        State* actual = (State*)queue_remove(cola);
+        iteraciones++;
+
+        if (esEstadoFinal(actual)) {
+            printf("Solución encontrada en %d iteraciones.\n", iteraciones);
+
+            List* acciones = actual->actions;
+            for (int i = 0; i < list_size(acciones); i++) {
+                int* accion = (int*)list_get(acciones, i);
+                imprimirEstado(transicion(inicial, *accion));
+            }
+
+            queue_clean(cola);
+            return;
+        }
+
+        for (int accion = 1; accion <= 4; accion++) {
+            State* nuevo_estado = transicion(actual, accion);
+            if (nuevo_estado != NULL) {
+                queue_insert(cola, nuevo_estado);
+            }
+        }
+
+        free(actual);
+    }
+
+    printf("No se encontró una solución.\n");
+
+    queue_clean(cola);
+}
+
+
 int main() {
     // Estado inicial del puzzle
     State estado_inicial = {
@@ -136,10 +215,10 @@ int main() {
 
         switch (opcion) {
         case '1':
-          //dfs(estado_inicial);
+          dfs(&estado_inicial);
           break;
         case '2':
-          //bfs(estado_inicial);
+          bfs(&estado_inicial);
           break;
         case '3':
           //best_first(estado_inicial);
