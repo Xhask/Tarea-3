@@ -14,7 +14,5 @@ void *stack_pop(Stack *stack) { return list_popFront(stack); }
 
 void stack_clean(Stack *stack) { list_clean(stack); }
 
-bool stack_is_empty(Stack* stack);
-
 
 #endif /* STACK_H */

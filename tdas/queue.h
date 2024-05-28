@@ -14,6 +14,5 @@ void *queue_front(Queue *queue) { return list_first(queue); }
 
 void queue_clean(Queue *queue) { list_clean(queue); }
 
-bool queue_is_empty(Queue* queue);
 
 #endif /* QUEUE_H */
