@@ -170,7 +170,7 @@ void dfs(State* inicial, int max_iteraciones) {
     Stack* pila = stack_create(NULL);
     stack_push(pila, inicial);
 
-    List* visitados = list_create();
+    List* visitados = list_create(); // Lista para almacenar estados visitados
 
     int iteraciones = 0;
 
@@ -199,7 +199,7 @@ void dfs(State* inicial, int max_iteraciones) {
             return;
         }
 
-        list_append(visitados, actual);
+        list_append(visitados, actual); // Agregar el estado actual a la lista de visitados
 
         for (int accion = 1; accion <= 4; accion++) {
             State* nuevo_estado = transicion(actual, accion);
@@ -217,14 +217,14 @@ void dfs(State* inicial, int max_iteraciones) {
         printf("No se encontró una solución.\n");
     }
     stack_clean(pila);
-    list_clean(visitados);
+    list_clean(visitados); // Limpiar la lista de visitados
 }
 
 void bfs(State* inicial, int max_iteraciones) {
     Queue* cola = queue_create(NULL);
     queue_insert(cola, inicial);
 
-    List* visitados = list_create();
+    List* visitados = list_create(); // Lista para almacenar estados visitados
 
     int iteraciones = 0;
 
@@ -253,7 +253,7 @@ void bfs(State* inicial, int max_iteraciones) {
             return;
         }
 
-        list_append(visitados, actual);
+        list_append(visitados, actual); // Agregar el estado actual a la lista de visitados
 
         for (int accion = 1; accion <= 4; accion++) {
             State* nuevo_estado = transicion(actual, accion);
@@ -271,7 +271,7 @@ void bfs(State* inicial, int max_iteraciones) {
         printf("No se encontró una solución.\n");
     }
     queue_clean(cola);
-    list_clean(visitados);
+    list_clean(visitados); // Limpiar la lista de visitados
 }
 
 int main() {

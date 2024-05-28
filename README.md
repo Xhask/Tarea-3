@@ -1,33 +1,27 @@
-En este *repl* puedes encontrar varios ejemplos que te pueden ayudar con las tareas de estructura.
 
-## Código de Ejemplo (tarea1)
-Para ejecutar el ejemplo tarea1 primero debemos compilar (en la carpeta raíz)
+## Busqueda 8-Puzzle!
+Para ejecutar el programa primero debemos compilar (en la carpeta raíz)
 ````
-gcc tdas/*.c tarea1.c -Wno-unused-result -o tarea1
+"gcc tdas/*.c tarea3.c -Wno-unused-result -o tarea3"
 ````
 
 Y luego ejecutar:
 ````
-./tarea1
+./tarea3
 ````
 
-## TDAs
-En la carpeta `tdas` se encuentran implementados distintos TDAs que puedes utilizar (lista, pila, cola, cola con prioridad y mapas). 
+## Modo de funcion
+En este programa, podremos resolver el conocido juego 8-puzzle a traves de diversos tipos de busqueda
 
-Las implementaciones no son las más eficientes (todas usan como estructura de datos una **lista enlazada**), por lo que puedes reemplazarlas por las que has realizado en los labs.
+## Tipos de busqueda
+Las opciones para los metodos de busqueda son:
+````
+1) Búsqueda en Profundidad
+2) Búsqueda en Anchura
+3) Buscar Mejor Primero (actualmente fuera de funcionamiento)
 
-## Otros códigos (en carpeta examples)
-Para ejecutar los distintos ejemplos que hay en la carpeta `examples`, primero debes compilarlos. Si estamos en la carpeta raíz:
 ````
-gcc tdas/*.c examples/example2_menu.c -Wno-unused-result -o example
-````
-Y luego ejecutarlos:
-````
-./example
-````
+El puzzle se puede modificar a voluntad propia en la carpeta "tarea3.c", asegurandose de usar los valores del 1 al 8 incluyendo el 0
 
-Se incluyen los siguientes ejemplos:
-* `example1_list`: Uso del TDA Lista, inserción y eliminación de elementos.
-* `example2_menu`: Ejemplo de menú con submenús.
-* `example3_readcsv`: Ejemplo de lectura desde un archivo csv y almacenamiento en datos estructurados.
-* `example4_map`: Ejemplo de uso del TDA mapa.
+
+
