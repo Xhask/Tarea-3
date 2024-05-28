@@ -22,6 +22,8 @@ Las opciones para los metodos de busqueda son:
 
 ````
 El puzzle se puede modificar a voluntad propia en la carpeta "tarea3.c", asegurandose de usar los valores del 1 al 8 incluyendo el 0
+````
+Para un correcto funcionamiento se sugiere establecer un numero de iteraciones maximo dependiendo de lo necesario, estos se encuentran en la carpeta "tarea3.c" en las opciones de los caso 1 y 2
 
 
 
